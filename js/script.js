@@ -3,44 +3,39 @@ const SELECT_ESTADO  = document.getElementById('estado');
 const SELECT_CIDADES = document.getElementById('cidade');
 
 function atualizarRegioes() {
-    let regioes = [
-        'Norte',
-        'Nordeste',
-        'Sul',
-        'Sudeste',
-        'Centro Oeste',
-    ];
+    fetch('https://servicodados.ibge.gov.br/api/v1/localidades/regioes')
+        .then(res => res.json())
+        .then(regioes => {
+            regioes = regioes.map(cada => `<option value="${cada.id}">${cada.nome}</option>`);
 
-    regioes = regioes.map(cada => `<option>${cada}</option>`);
+            SELECT_REGIAO.innerHTML += regioes;
+    });
 
-    SELECT_REGIAO.innerHTML += regioes;
 };
 
 
 function atualizarEstados() {
-    let estados = [
-        'CE',
-        'SP',
-        'RS',
-    ];
+    let id = SELECT_REGIAO.value;
 
-    estados = estados.map(cada => `<option>${cada}</option>`);
+    fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/regioes/${id}/estados`)
+        .then(res => res.json())
+        .then(estados => {
+            estados = estados.map(cada => `<option value="${cada.id}">${cada.nome}</option>`);
 
-    SELECT_ESTADO.innerHTML += estados;
+            SELECT_ESTADO.innerHTML += estados;
+    });
 };
 
 
 function atualizarCidades() {
-    let cidades = [
-        'Fortaleza',
-        'Zona sul',
-        'Gramado',
-    ];
+    let id = SELECT_ESTADO.value
+    fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${id}/municipios`)
+        .then(res => res.json())
+        .then(cidades => {
+            cidades = cidades.map(cada => `<option value="${cada.id}">${cada.nome}</option>`);
 
-    cidades = cidades.map(cada => `<option>${cada}</option>`);
-
-    SELECT_CIDADES.innerHTML += cidades;
+            SELECT_CIDADES.innerHTML += cidades;
+    });
 };
-
 
 atualizarRegioes();
