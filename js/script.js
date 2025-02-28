@@ -32,11 +32,13 @@ function atualizarEstados() {
 function atualizarCidades() {
     let id = SELECT_ESTADO.value
 
-    SELECT_CIDADES.innerHTML = '<option selected disabled> -- Selecione -- </option>';
+    SELECT_CIDADES.innerHTML = '<option selected disabled > -- Carregando -- </option>';
 
     fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${id}/municipios`)
         .then(res => res.json())
         .then(cidades => {
+            SELECT_CIDADES.innerHTML = '<option selected disabled> -- Selecione -- </option>';
+
             cidades = cidades.map(cada => `<option value="${cada.id}">${cada.nome}</option>`);
 
             SELECT_CIDADES.innerHTML += cidades;
