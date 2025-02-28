@@ -17,6 +17,8 @@ function atualizarRegioes() {
 function atualizarEstados() {
     let id = SELECT_REGIAO.value;
 
+    SELECT_ESTADO.innerHTML = '<option selected disabled> -- Selecione -- </option>';
+
     fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/regioes/${id}/estados`)
         .then(res => res.json())
         .then(estados => {
@@ -29,6 +31,9 @@ function atualizarEstados() {
 
 function atualizarCidades() {
     let id = SELECT_ESTADO.value
+
+    SELECT_CIDADES.innerHTML = '<option selected disabled> -- Selecione -- </option>';
+
     fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${id}/municipios`)
         .then(res => res.json())
         .then(cidades => {
